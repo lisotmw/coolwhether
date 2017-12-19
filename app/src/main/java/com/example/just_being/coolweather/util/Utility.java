@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.example.just_being.coolweather.db.City;
 import com.example.just_being.coolweather.db.County;
 import com.example.just_being.coolweather.db.Province;
+import com.example.just_being.coolweather.gson.Weather;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +17,22 @@ import org.json.JSONObject;
  */
 
 public class Utility {
+    /**
+     * Parse the return JSON Data into the entity of Weather class
+     * @param response
+     * @return
+     */
+    public static Weather handleWeatherResponse(String response){
+        try{
+            JSONObject jsonObject=new JSONObject(response);
+            JSONArray jsonArray= jsonObject.getJSONArray("HeWeather");
+            String weatherContent= jsonArray.getJSONObject(0).toString();
+            return new Gson().fromJson(weatherContent,Weather.class);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
     /**
      * parse and process the data of province returned by server
      */
